@@ -1,0 +1,112 @@
+<div class="row preinventory-create--main-container">
+  <!-- ADD SINGLE VEHICLE -->
+  <div class="col-6">
+    <div class="card">
+      <div class="card-header">
+        Add Vehicle to the Pre-Inventory
+      </div>
+      <div class="card-block">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+          <div class="row">
+            <div class="col-12">
+              <cus-input-text label="VIN" [fc]="form.controls.vin" addon="barcode">
+                <input formControlName="vin" [(ngModel)]="model.vin" placeholder="VIN" it-req="vin" max=30>
+              </cus-input-text>
+            </div>
+            <div class="col-6">
+              <cus-input-text label="Odometer" [fc]="form.controls.currentMiles" addon="tachometer">
+                <input formControlName="currentMiles" [(ngModel)]="model.currentMiles" placeholder="Odometer" it-req="currentMiles" max="9"
+                  (keyup)="onMilesKeyEvt($event.target.value)" (focusout)="showTradeInValues()">
+              </cus-input-text>
+            </div>
+            <div class="col-6">
+              <cus-input-text label="Price" [fc]="form.controls.price" addon="dollar">
+                <input formControlName="price" [(ngModel)]="model.price" placeholder="Price" it-req="price" max="9" (keyup)="onPriceKeyEvt($event.target.value)">
+              </cus-input-text>
+            </div>
+            <div class="col-6 col-button">
+              <button type="submit" class="btn btn-success" [disabled]="!form.valid || !vehicleNADAPrice || NADAPriceValidation(model.price)">Add Vehicle</button>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-info" *ngIf="NADAProccesed && (vehicleNADAPrice || !vehicleNADAPrice)">
+                <strong>
+                  <i class="fa fa-info-circle"></i> NADA Pricing:</strong>
+                <br/>
+                <span *ngIf="vehicleNADAPrice">${{removeDecimals(vehicleNADAPrice.roughtradein) | number}} - ${{removeDecimals(getNumberRounded50(vehicleNADAPrice.avgtradein))
+                  | number}}</span>
+                <span *ngIf="!vehicleNADAPrice">NA</span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- ADD VEHICLES BATCH -->
+  <div class="col-6">
+    <div class="card">
+      <div class="card-header">
+        Add many VINs to your Pre-Inventory in 3 easy steps:
+      </div>
+      <div class="card-block">
+        <div class="row">
+          <div class="col-2">
+            <label class="labels-responsive">
+              <span class="badge circle">1</span>
+            </label>
+          </div>
+          <div class="col-10 text-left preinventory-create--bulk-template-cont">
+            <a href="assets/files/Pre-Inventory Template.xlsx">Download Pre-Inventory Sample Spreadsheet</a>
+          </div>
+          <div class="col-2">
+            <label class="labels-responsive">
+              <span class="badge circle">2</span>
+            </label>
+          </div>
+          <div class="col-10 text-left preinventory-create--bulk-filechooser-cont">
+            <file-chooser [printTitle]="false" label="Upload File" (onSelect)="onFileSelect($event)" name="file" [ext]="['xlsx']"></file-chooser>
+          </div>
+          <div class="col-2">
+            <label class="labels-responsive">
+              <span class="badge circle">3</span>
+            </label>
+          </div>
+          <div class="col-10 text-left preinventory-create--bulk-processbtn-cont">
+            <button type="submit" class="btn btn-success" [disabled]="!vehiclesFile" (click)="submitFile()">Process</button>
+            <!-- Batch Load Result Modal -->
+            <div id="batch-result-modal" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Spreadsheet Processing Results</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div *ngIf="batchServiceResponse">
+                      <div>
+                        <span>Your spreadsheet contained {{batchServiceResponse.rowCount}} VINs. {{batchServiceResponse.rowCount-batchServiceResponse.errorRowsCount}}
+                          of them were successfully added</span>
+                        <span *ngIf="batchServiceResponse.errorRowsCount==0">.</span>
+                        <span *ngIf="batchServiceResponse.errorRowsCount>0">, and {{batchServiceResponse.errorRowsCount}} were not added. Here are the VINs that were not added:</span>
+                      </div>
+                      <div class="batch-result-modal--list-container" *ngIf="batchServiceResponse.errorRowsCount>0">
+                        <div *ngFor="let item of batchServiceResponse.detail; let i = index">
+                          {{i+1}}. {{item.result}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" (click)="modal.dismiss()">
+                      CLOSE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

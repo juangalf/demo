@@ -1,0 +1,17 @@
+.preinventory--main-container .preinventory--list-table {
+  margin-top: 20px;
+}
+.preinventory--main-container .preinventory--list-table thead th {
+  color: #ffffff;
+}
+.preinventory--main-container .preinventory--list-table .preinventory--list-table-count {
+  max-width: 115px;
+}
+.preinventory--main-container .preinventory--list-table .preinventory--buttons-container {
+  min-width: 285px;
+  width: 285px;
+  max-width: 285px;
+}
+.preinventory--main-container .preinventory--list-table .preinventory--buttons-container .btn {
+  margin-top: 5px;
+}

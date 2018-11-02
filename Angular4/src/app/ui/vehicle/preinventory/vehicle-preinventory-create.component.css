@@ -1,0 +1,27 @@
+.preinventory-create--main-container .col-button{
+  /* padding-top: 32px; */
+  padding-top: 12px;
+  padding-bottom: 18px;
+}
+.circle {
+  background: #0275d8;
+  border-radius: 50px;
+  color: white;
+  height: 50px;
+  font-weight: bold;
+  width: 50px;
+  font-size: 21px;
+  line-height: 35px;
+  margin-right: 10px;
+}
+.preinventory-create--bulk-filechooser-cont, .preinventory-create--bulk-processbtn-cont{
+  padding-top: 5px;
+}
+.preinventory-create--bulk-template-cont {
+  padding-top: 12px;
+  padding-bottom: 30px;
+}
+.batch-result-modal--list-container{
+  max-height: 300px;
+  overflow-y: auto;
+}
